@@ -47,6 +47,11 @@ interface OptionSomeNone<T> {
 	 * Maps the contained Some value to a new Option<U> value.
 	 */
 	and_then<U>(fn: (val: T) => Option<U>): Option<U>;
+
+	/**
+	 * Calls the given closure with the contained value if the value is a `Some` variant.
+	 */
+	inspect(fn: (val: T) => void): Option<T>;
 }
 
 export class _Some<T> implements OptionSomeNone<T> {
@@ -87,6 +92,11 @@ export class _Some<T> implements OptionSomeNone<T> {
 	and_then<U>(fn: (val: T) => Option<U>): Option<U> {
 		return fn(this.value);
 	}
+
+	inspect(fn: (val: T) => void): Option<T> {
+		fn(this.value);
+		return this;
+	}
 }
 
 export class _None<T> implements OptionSomeNone<T> {
@@ -120,6 +130,10 @@ export class _None<T> implements OptionSomeNone<T> {
 
 	and_then<U>(fn: (val: T) => Option<U>): Option<U> {
 		return None();
+	}
+
+	inspect(fn: (val: T) => void): Option<T> {
+		return this;
 	}
 }
 

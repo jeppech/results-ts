@@ -78,8 +78,13 @@ interface ResultOkErr<T, E> {
 	 */
 	and_then<U>(fn: (val: T) => Result<U, E>): Result<U, E>;
 
+  /**
+   * Calls the given closure with the contained value if the value is an `Ok` variant.
+   */
+  inspect(fn: (val: T) => void): Result<T, E>;
+
 	/**
-	 * Inspects the Err value, leaving the Result<T, E> untouched.
+	 * Calls the given closure with the contained error if the value is an `Err` variant.
 	 */
 	inspect_err: (fn: (err: E) => void) => Result<T, E>;
 }
@@ -134,6 +139,11 @@ class OkResult<T, E> implements ResultOkErr<T, E> {
 	and_then<U>(fn: (val: T) => Result<U, E>): Result<U, E> {
 		return fn(this.value);
 	}
+
+  inspect(fn: (val: T) => void): Result<T, E> {
+    fn(this.value);
+    return this as unknown as Result<T, E>;
+  }
 
 	inspect_err(fn: (err: E) => void): Result<T, E> {
 		return this as unknown as Result<T, E>;
@@ -192,6 +202,10 @@ class ErrResult<T, E> implements ResultOkErr<T, E> {
 	and_then<U>(fn: (val: T) => Result<U, E>): Result<U, E> {
 		return this as unknown as Result<U, E>;
 	}
+
+  inspect(fn: (val: T) => void): Result<T, E> {
+    return this as unknown as Result<T, E>;
+  }
 
 	inspect_err(fn: (err: E) => void): Result<T, E> {
 		fn(this.error);
