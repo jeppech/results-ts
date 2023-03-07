@@ -5,14 +5,14 @@ export const ResultType = {
 	Err: Symbol('_err')
 };
 
-export type Result<T, E> = _Ok<T, E> | _Err<T, E>;
+export type Result<T, E> = OkResult<T, E> | ErrResult<T, E>;
 
 export function Ok<T>(value: T): Result<T, never> {
-	return new _Ok(value);
+	return new OkResult(value);
 }
 
 export function Err<E>(error: E): Result<never, E> {
-	return new _Err(error);
+	return new ErrResult(error);
 }
 
 interface ResultOkErr<T, E> {
@@ -31,12 +31,12 @@ interface ResultOkErr<T, E> {
 	/**
 	 * Asserts that the value is an `Ok` variant.
 	 */
-	is_ok(): this is _Ok<T, E>;
+	is_ok(): this is OkResult<T, E>;
 
 	/**
 	 * Asserts that the value is an `Err` variant.
 	 */
-	is_err(): this is _Err<T, E>;
+	is_err(): this is ErrResult<T, E>;
 
 	/**
 	 * Returns an Option<T> containing the value if the result is an `Ok` variant, otherwise returns None.
@@ -84,7 +84,7 @@ interface ResultOkErr<T, E> {
 	inspect_err: (fn: (err: E) => void) => Result<T, E>;
 }
 
-class _Ok<T, E> implements ResultOkErr<T, E> {
+class OkResult<T, E> implements ResultOkErr<T, E> {
 	constructor(private value: T) {}
 
 	get type(): typeof ResultType.Ok {
@@ -111,11 +111,11 @@ class _Ok<T, E> implements ResultOkErr<T, E> {
 		return this.value;
 	}
 
-	is_ok(): this is _Ok<T, E> {
+	is_ok(): this is OkResult<T, E> {
 		return true;
 	}
 
-	is_err(): this is _Err<T, E> {
+	is_err(): this is ErrResult<T, E> {
 		return false;
 	}
 
@@ -140,7 +140,7 @@ class _Ok<T, E> implements ResultOkErr<T, E> {
 	}
 }
 
-class _Err<T, E> implements ResultOkErr<T, E> {
+class ErrResult<T, E> implements ResultOkErr<T, E> {
 	constructor(private error: E) {}
 
 	get type(): typeof ResultType.Err {
@@ -167,11 +167,11 @@ class _Err<T, E> implements ResultOkErr<T, E> {
 		return fn(this.error);
 	}
 
-	is_ok(): this is _Ok<T, E> {
+	is_ok(): this is OkResult<T, E> {
 		return false;
 	}
 
-	is_err(): this is _Err<T, E> {
+	is_err(): this is ErrResult<T, E> {
 		return true;
 	}
 
