@@ -3,7 +3,7 @@ export const OptionType = {
 	None: Symbol('_none')
 };
 
-export type Option<T> = _Some<T> | _None<T>;
+export type Option<T> = SomeOption<T> | NoneOption<T>;
 
 interface OptionSomeNone<T> {
 	type: symbol;
@@ -16,12 +16,12 @@ interface OptionSomeNone<T> {
 	/**
 	 * Asserts that the value is a `Some` variant.
 	 */
-	is_some(): this is _Some<T>;
+	is_some(): this is SomeOption<T>;
 
 	/**
 	 * Asserts that the value is a `None` variant.
 	 */
-	is_none(): this is _None<T>;
+	is_none(): this is NoneOption<T>;
 
 	/**
 	 * Returns the contained Some value or a provided default.
@@ -54,18 +54,18 @@ interface OptionSomeNone<T> {
 	inspect(fn: (val: T) => void): Option<T>;
 }
 
-export class _Some<T> implements OptionSomeNone<T> {
+export class SomeOption<T> implements OptionSomeNone<T> {
 	constructor(private value: T) {}
 
 	get type(): typeof OptionType.Some {
 		return OptionType.Some;
 	}
 
-	is_some(): this is _Some<T> {
+	is_some(): this is SomeOption<T> {
 		return true;
 	}
 
-	is_none(): this is _None<T> {
+	is_none(): this is NoneOption<T> {
 		return false;
 	}
 
@@ -99,16 +99,16 @@ export class _Some<T> implements OptionSomeNone<T> {
 	}
 }
 
-export class _None<T> implements OptionSomeNone<T> {
+export class NoneOption<T> implements OptionSomeNone<T> {
 	get type(): typeof OptionType.None {
 		return OptionType.None;
 	}
 
-	is_some(): this is _Some<T> {
+	is_some(): this is SomeOption<T> {
 		return false;
 	}
 
-	is_none(): this is _None<T> {
+	is_none(): this is NoneOption<T> {
 		return true;
 	}
 
@@ -138,10 +138,10 @@ export class _None<T> implements OptionSomeNone<T> {
 }
 
 export function Some<T>(value: T): Option<T> {
-	return new _Some(value);
+	return new SomeOption(value);
 }
 
-const _none_instance = new _None<any>();
+const _none_instance = new NoneOption<any>();
 
 export function None<T>(): Option<T> {
 	return _none_instance;
