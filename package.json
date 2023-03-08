@@ -1,41 +1,42 @@
 {
-  "name": "@jeppech/results-ts",
-  "version": "1.0.0-beta.0",
-  "description": "Rust-like Result and Option types for TypeScript",
-  "main": "index.js",
-  "types": "index.d.ts",
-  "files": [
-    "lib/**/*"
-  ],
-  "scripts": {
-    "prepare": "npm run build",
-    "prepublishOnly": "echo \"no prepublishOnly task\"",
-    "format": "prettier --config .prettierrc --write 'src/**/*.ts'",
-    "build": "rm -rf ./lib/**/* && tsc",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [
-    "result",
-    "option",
-    "rust",
-    "typescript",
-    "monad",
-    "functional"
-  ],
-  "author": "",
-  "license": "ISC",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/jeppech/results-ts.git"
-  },
-  "bugs": {
-    "url": "https://github.com/jeppech/results-ts/issues"
-  },
-  "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^5.54.1",
-    "@typescript-eslint/parser": "^5.54.1",
-    "eslint": "^8.35.0",
-    "prettier": "^2.8.4",
-    "typescript": "^4.9.5"
-  }
+	"name": "@jeppech/results-ts",
+	"version": "1.0.0-beta.0",
+	"description": "Rust-like Result and Option types for TypeScript",
+	"main": "index.js",
+	"types": "index.d.ts",
+	"files": [
+		"lib/**/*"
+	],
+	"scripts": {
+		"prepare": "npm run build",
+		"prepublishOnly": "echo \"no prepublishOnly task\"",
+		"format": "prettier --config .prettierrc --write 'src/**/*.ts'",
+		"lint": "eslint --ext .ts src/",
+		"build": "rm -rf ./lib/**/* && tsc",
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"keywords": [
+		"result",
+		"option",
+		"rust",
+		"typescript",
+		"monad",
+		"functional"
+	],
+	"author": "",
+	"license": "ISC",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/jeppech/results-ts.git"
+	},
+	"bugs": {
+		"url": "https://github.com/jeppech/results-ts/issues"
+	},
+	"devDependencies": {
+		"@typescript-eslint/eslint-plugin": "^5.54.1",
+		"@typescript-eslint/parser": "^5.54.1",
+		"eslint": "^8.35.0",
+		"prettier": "^2.8.4",
+		"typescript": "^4.9.5"
+	}
 }
