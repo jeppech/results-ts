@@ -1,9 +1,9 @@
 import { Some, None, type Option } from './option';
 
-export const ResultType = {
-	Ok: Symbol('_ok'),
-	Err: Symbol('_err'),
-};
+export enum ResultType {
+	Ok,
+	Err,
+}
 
 export type Result<T, E> = OkResult<T, E> | ErrResult<T, E>;
 
@@ -16,7 +16,7 @@ export function Err<E>(error: E): Result<never, E> {
 }
 
 interface ResultOkErr<T, E> {
-	type: symbol;
+	type: ResultType;
 
 	/**
 	 * Returns the contained Ok value. If called on a potential `Err` variant, it'll fail at compile time.
@@ -90,11 +90,8 @@ interface ResultOkErr<T, E> {
 }
 
 class OkResult<T, E> implements ResultOkErr<T, E> {
+	public readonly type = ResultType.Ok;
 	constructor(private value: T) {}
-
-	get type(): typeof ResultType.Ok {
-		return ResultType.Ok;
-	}
 
 	ok(): Option<T> {
 		return Some(this.value);
@@ -151,11 +148,9 @@ class OkResult<T, E> implements ResultOkErr<T, E> {
 }
 
 class ErrResult<T, E> implements ResultOkErr<T, E> {
-	constructor(private error: E) {}
+	public readonly type = ResultType.Err;
 
-	get type(): typeof ResultType.Err {
-		return ResultType.Err;
-	}
+	constructor(private error: E) {}
 
 	ok(): Option<T> {
 		return None();

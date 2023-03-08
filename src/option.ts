@@ -1,12 +1,12 @@
-export const OptionType = {
-	Some: Symbol('_some'),
-	None: Symbol('_none'),
-};
+enum OptionType {
+	Some,
+	None,
+}
 
 export type Option<T> = SomeOption<T> | NoneOption<T>;
 
 interface OptionSomeNone<T> {
-	type: symbol;
+	type: typeof OptionType.Some | typeof OptionType.None;
 
 	/**
 	 * Returns the contained Some value. If called on a potential `None` variant, it'll fail at compile time.
@@ -55,11 +55,9 @@ interface OptionSomeNone<T> {
 }
 
 export class SomeOption<T> implements OptionSomeNone<T> {
-	constructor(private value: T) {}
+	public readonly type = OptionType.Some;
 
-	get type(): typeof OptionType.Some {
-		return OptionType.Some;
-	}
+	constructor(private value: T) {}
 
 	is_some(): this is SomeOption<T> {
 		return true;
@@ -100,9 +98,7 @@ export class SomeOption<T> implements OptionSomeNone<T> {
 }
 
 export class NoneOption<T> implements OptionSomeNone<T> {
-	get type(): typeof OptionType.None {
-		return OptionType.None;
-	}
+	public readonly type = OptionType.None;
 
 	is_some(): this is SomeOption<T> {
 		return false;
@@ -142,8 +138,11 @@ export function Some<T>(value: T): Option<T> {
 }
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
-const _none_instance = new NoneOption<any>();
+let _none_instance: NoneOption<any>;
 
-export function None<T>(): Option<T> {
+export function None<T>(): NoneOption<T> {
+	if (_none_instance === undefined) {
+		_none_instance = new NoneOption<T>();
+	}
 	return _none_instance;
 }
