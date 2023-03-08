@@ -189,7 +189,7 @@ class ErrResult<T, E> implements ResultOkErr<T, E> {
 		return fn(this.error);
 	}
 
-	map<U>(_: (val: T) => U): Result<U, E> {
+	map<U>(fn: (val: T) => U): Result<U, E> {
 		// We could return a new instance of _Err, to satisfy the return type.
 		// But instead we just return the same instance, since it's already an error.
 		return this as unknown as Result<U, E>;

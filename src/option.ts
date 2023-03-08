@@ -141,6 +141,7 @@ export function Some<T>(value: T): Option<T> {
 	return new SomeOption(value);
 }
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
 const _none_instance = new NoneOption<any>();
 
 export function None<T>(): Option<T> {

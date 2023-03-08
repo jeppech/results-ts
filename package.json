@@ -9,9 +9,9 @@
 	],
 	"scripts": {
 		"prepare": "npm run build",
-		"prepublishOnly": "echo \"no prepublishOnly task\"",
+		"prepublishOnly": "npm run lint",
 		"format": "prettier --config .prettierrc --write 'src/**/*.ts'",
-		"lint": "eslint --ext .ts src/",
+		"lint": "eslint -c .eslintrc.json --ext .ts src/",
 		"build": "rm -rf ./lib/**/* && tsc",
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
