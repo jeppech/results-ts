@@ -1,38 +1,45 @@
-import { Ok, Err, Some, None, type Result, type Option } from '../src'
+import { Ok, Err, type Result } from '../src';
 
-interface Server {
-  address: string
-  port: number
-  password: Option<string>
+// The generic `Result`-type must be set on the function signature
+function greetings(name?: string): Result<string, Error> {
+	if (name === 'jeppech') {
+		return Err(new Error('I will not greet jeppech!'));
+	}
+
+	if (name === undefined) {
+		return Ok('Guest');
+	}
+
+	return Ok(name);
 }
 
-function find_server(): Result<Server, Error> {
-  if (Math.random() > 0.5) {
-    return Ok({
-      address: '8.8.8.8',
-      port: 53,
-      password: Some('secret'),
-    })
-  }
+// enable inlay hints in VSCode, to see the inferred types
+// Result<string, Error>
+const t1 = greetings('jeppech');
+// Result<number, Error>
+const t2 = greetings().map((name) => name.length);
+// Result<string, string>
+const t3 = greetings('admin').map_err((err) => err.message);
+// Option<string>
+const t4 = greetings('user').ok();
 
-  return Err(new Error('no server found!'))
+// `is_ok` and `is_err` can be used to narrow the type
+if (t1.is_ok()) {
+	// OkResult<string, Error>
+	const t4 = t1;
+} else {
+	// ErrResult<string, Error>
+	const t4 = t1;
 }
 
+// Option<string>
+const o1 = t4;
 
-const srv = find_server()
-  .inspect_err((e) => {
-    if (e instanceof Error) {
-      console.error('could not find server:', e.message)
-    } else {
-      console.error('unknown error:', e)
-    }
-  }).unwrap_or({
-    address: 'localhost',
-    port: 53,
-    password: None()
-  })
-
-console.log(`
-Server is located at: ${srv.address}:${srv.port}\n
-The password is: ${srv.password.unwrap_or('N/A')}
-`)
+// `is_some` and `is_none` can be used to narrow the type
+if (o1.is_some()) {
+	// SomeOption<string>
+	const o2 = o1;
+} else {
+	// NoneOption<string>
+	const o2 = o1;
+}
