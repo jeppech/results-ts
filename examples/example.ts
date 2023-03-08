@@ -44,8 +44,10 @@ if (o1.is_none()) {
 	const o2 = o1;
 }
 
-// string           |- this is a Result<string, Error>
+// string
 const e1 = t1.expect("we do not expect the name to be 'jeppech'. This throws!");
+//         ^- this is a Result<string, Error>");
 
-// string           |- this is an Option<string>
+// string
 const e2 = o1.expect('this does not throw, because the option is not None.');
+//         ^- this is a Option<string>
