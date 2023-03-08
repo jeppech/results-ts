@@ -10,9 +10,9 @@
 	"scripts": {
 		"prepare": "npm run build",
 		"prepublishOnly": "npm run lint",
-		"format": "prettier --config .prettierrc --write 'src/**/*.ts'",
-		"lint": "eslint -c .eslintrc.json --ext .ts src/",
-		"build": "rm -rf ./lib/**/* && tsc",
+		"format": "prettier --config .config/.prettierrc --write 'src/**/*.ts'",
+		"lint": "eslint -c .config/.eslintrc.json --ext .ts src/",
+		"build": "rm -rf ./lib/**/* && tsc -p src/tsconfig.json",
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
 	"keywords": [
