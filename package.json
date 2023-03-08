@@ -2,8 +2,8 @@
 	"name": "@jeppech/results-ts",
 	"version": "1.0.0-beta.0",
 	"description": "Rust-like Result and Option types for TypeScript",
-	"main": "index.js",
-	"types": "index.d.ts",
+	"main": "lib/index.js",
+	"types": "lib/index.d.ts",
 	"files": [
 		"lib/**/*"
 	],
@@ -14,7 +14,7 @@
 		"lint": "eslint --ext .ts src/",
 		"build": "rm -rf ./lib/**/* && tsc",
 		"test": "echo \"Error: no test specified\" && exit 1",
-		"publish": "npm publish"
+		"publish": "npm publish --access public"
 	},
 	"keywords": [
 		"result",
