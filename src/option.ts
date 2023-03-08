@@ -24,6 +24,14 @@ interface OptionSomeNone<T> {
 	is_none(): this is NoneOption<T>;
 
 	/**
+	 * Returns the contained Some value. Throws an error if the Option is a `None` variant
+	 *
+	 * It's not recommended to catch this error, as it's meant to stop the execution of the program.
+	 * @throws {Error} with the given message
+	 */
+	expect(msg: string): T;
+
+	/**
 	 * Returns the contained Some value or a provided default.
 	 */
 	unwrap_or(opt: T): T;
@@ -67,6 +75,10 @@ export class SomeOption<T> implements OptionSomeNone<T> {
 		return false;
 	}
 
+	expect(msg: string): T {
+		return this.value;
+	}
+
 	unwrap(): T {
 		return this.value;
 	}
@@ -106,6 +118,10 @@ export class NoneOption<T> implements OptionSomeNone<T> {
 
 	is_none(): this is NoneOption<T> {
 		return true;
+	}
+
+	expect(msg: string): T {
+		throw new Error(msg);
 	}
 
 	unwrap_or(opt: T): T {

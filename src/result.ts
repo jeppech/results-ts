@@ -49,6 +49,14 @@ interface ResultOkErr<T, E> {
 	err(): Option<E>;
 
 	/**
+	 * Returns the contained Ok value. Throws an error if the result is an `Err` variant.
+	 *
+	 * It's not recommended to catch this error, as it's meant to stop the execution of the program.
+	 * @throws {Error} with the given message
+	 */
+	expect(msg: string): T;
+
+	/**
 	 * Returns the contained Ok value or a provided default.
 	 */
 	unwrap_or(opt: T): T;
@@ -99,6 +107,10 @@ class OkResult<T, E> implements ResultOkErr<T, E> {
 
 	err(): Option<E> {
 		return None();
+	}
+
+	expect(msg: string): T {
+		return this.value;
 	}
 
 	unwrap(): T {
@@ -158,6 +170,10 @@ class ErrResult<T, E> implements ResultOkErr<T, E> {
 
 	err(): Option<E> {
 		return Some(this.error);
+	}
+
+	expect(msg: string): T {
+		throw new Error(msg);
 	}
 
 	unwrap_err(): E {
