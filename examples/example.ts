@@ -36,10 +36,10 @@ if (t1.is_ok()) {
 const o1 = t4;
 
 // `is_some` and `is_none` can be used to narrow the type
-if (o1.is_some()) {
-	// SomeOption<string>
+if (o1.is_none()) {
+	// NoneOption<string>
 	const o2 = o1;
 } else {
-	// NoneOption<string>
+	// SomeOption<string>
 	const o2 = o1;
 }
