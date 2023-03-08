@@ -1,6 +1,6 @@
 export const OptionType = {
 	Some: Symbol('_some'),
-	None: Symbol('_none')
+	None: Symbol('_none'),
 };
 
 export type Option<T> = SomeOption<T> | NoneOption<T>;

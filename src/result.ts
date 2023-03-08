@@ -2,7 +2,7 @@ import { Some, None, type Option } from './option';
 
 export const ResultType = {
 	Ok: Symbol('_ok'),
-	Err: Symbol('_err')
+	Err: Symbol('_err'),
 };
 
 export type Result<T, E> = OkResult<T, E> | ErrResult<T, E>;
@@ -78,10 +78,10 @@ interface ResultOkErr<T, E> {
 	 */
 	and_then<U>(fn: (val: T) => Result<U, E>): Result<U, E>;
 
-  /**
-   * Calls the given closure with the contained value if the value is an `Ok` variant.
-   */
-  inspect(fn: (val: T) => void): Result<T, E>;
+	/**
+	 * Calls the given closure with the contained value if the value is an `Ok` variant.
+	 */
+	inspect(fn: (val: T) => void): Result<T, E>;
 
 	/**
 	 * Calls the given closure with the contained error if the value is an `Err` variant.
@@ -140,10 +140,10 @@ class OkResult<T, E> implements ResultOkErr<T, E> {
 		return fn(this.value);
 	}
 
-  inspect(fn: (val: T) => void): Result<T, E> {
-    fn(this.value);
-    return this as unknown as Result<T, E>;
-  }
+	inspect(fn: (val: T) => void): Result<T, E> {
+		fn(this.value);
+		return this as unknown as Result<T, E>;
+	}
 
 	inspect_err(fn: (err: E) => void): Result<T, E> {
 		return this as unknown as Result<T, E>;
@@ -203,9 +203,9 @@ class ErrResult<T, E> implements ResultOkErr<T, E> {
 		return this as unknown as Result<U, E>;
 	}
 
-  inspect(fn: (val: T) => void): Result<T, E> {
-    return this as unknown as Result<T, E>;
-  }
+	inspect(fn: (val: T) => void): Result<T, E> {
+		return this as unknown as Result<T, E>;
+	}
 
 	inspect_err(fn: (err: E) => void): Result<T, E> {
 		fn(this.error);
