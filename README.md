@@ -1,10 +1,15 @@
-# Results
+# Result and Option types, like in Rust! 🤯
 
 Utility functions for creating and handling Rust-like Result and Options types.
 
-# Example
+## Install
+```sh
+pnpm add @jeppech/results-ts
+```
+## Usage
 
-Try enabling `inlay` types in your IDE. The inferred types, should match the comments.
+> __Hint__: 
+Try enabling `inlay` types in your IDE. The inferred types, should match the comments, in the snippet below.
 
 ```ts
 import { Ok, Err, type Result } from '@jeppech/results-ts';
