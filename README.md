@@ -55,4 +55,4 @@ if (o1.is_none()) {
 
 # Acknowledgement
 
-- This is inspired by the [Monads](https://github.com/sniptt-official/monads/)
+- This is inspired by the [Monads](https://github.com/sniptt-official/monads) project
