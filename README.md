@@ -9,7 +9,8 @@ Try enabling `inlay` types in your IDE. The inferred types, should match the com
 ```ts
 import { Ok, Err, type Result } from '@jeppech/results-ts';
 
-// The generic `Result`-type must be set on the function signature
+// The generic `Result`-type (or `Option`-type) must be explicitly set on function signatures.
+// Otherwise typescript will infer the underlaying Union type instead.
 function greetings(name?: string): Result<string, Error> {
   if (name === 'jeppech') {
     return Err(new Error('I will not greet jeppech!'));
@@ -24,10 +25,13 @@ function greetings(name?: string): Result<string, Error> {
 
 // Result<string, Error>
 const t1 = greetings('jeppech');
+
 // Result<number, Error>
 const t2 = greetings().map((name) => name.length);
+
 // Result<string, string>
 const t3 = greetings('admin').map_err((err) => err.message);
+
 // Option<string>
 const t4 = greetings('user').ok();
 
