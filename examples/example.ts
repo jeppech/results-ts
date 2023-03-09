@@ -39,8 +39,11 @@ const o1 = t4;
 if (o1.is_none()) {
 	// NoneOption<string>
 	const o2 = o1;
-} else {
+} else if (o1.is_some()) {
 	// SomeOption<string>
+	const o2 = o1;
+} else {
+	// never
 	const o2 = o1;
 }
 
