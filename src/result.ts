@@ -15,38 +15,38 @@ export function Err<E>(error: E): Result<never, E> {
 	return new ErrResult(error);
 }
 
-interface ResultOkErr<T, E> {
-	type: ResultType;
+abstract class ResultBase<T, E> {
+	abstract readonly type: ResultType;
+
+	is_ok(): this is OkResult<T, E> {
+		return this.type === ResultType.Ok;
+	}
+
+	is_err(): this is ErrResult<T, E> {
+		return this.type === ResultType.Err;
+	}
 
 	/**
-	 * Returns the contained Ok value. If called on a potential `Err` variant, it'll fail at compile time.
+	 * Returns the contained Ok value.
+	 * If called on a potential `Err` variant, it'll fail at compile time.
 	 */
-	unwrap?: () => T;
+	unwrap?(): T;
 
 	/**
-	 * Returns the contained Err value. If called on a potential `Ok` variant, it'll fail at compile time.
+	 * Returns the contained Err value.
+	 * If called on a potential `Ok` variant, it'll fail at compile time.
 	 */
-	unwrap_err?: () => E;
-
-	/**
-	 * Asserts that the value is an `Ok` variant.
-	 */
-	is_ok(): this is OkResult<T, E>;
-
-	/**
-	 * Asserts that the value is an `Err` variant.
-	 */
-	is_err(): this is ErrResult<T, E>;
+	unwrap_err?(): E;
 
 	/**
 	 * Returns an Option<T> containing the value if the result is an `Ok` variant, otherwise returns None.
 	 */
-	ok(): Option<T>;
+	abstract ok(): Option<T>;
 
 	/**
 	 * Returns an Option<E> containing the error if the result is `Err`, otherwise returns None.
 	 */
-	err(): Option<E>;
+	abstract err(): Option<E>;
 
 	/**
 	 * Returns the contained Ok value. Throws an error if the result is an `Err` variant.
@@ -54,59 +54,61 @@ interface ResultOkErr<T, E> {
 	 * It's not recommended to catch this error, as it's meant to stop the execution of the program.
 	 * @throws {Error} with the given message
 	 */
-	expect(msg: string): T;
+	abstract expect(msg: string): T;
 
 	/**
 	 * Returns the contained Ok value or a provided default.
 	 */
-	unwrap_or(opt: T): T;
+	abstract unwrap_or(opt: T): T;
 
 	/**
 	 * Returns the contained Ok value or computes it from the given closure.
 	 */
-	unwrap_or_else(fn: (err: E) => T): T;
+	abstract unwrap_or_else(fn: (err: E) => T): T;
 
 	/**
 	 * Maps the contained Err value to a new Result<T, E>. Leaves the `Ok` value untouched.
 	 */
-	or_else(fn: (err: E) => Result<T, E>): Result<T, E>;
+	abstract or_else(fn: (err: E) => Result<T, E>): Result<T, E>;
 
 	/**
 	 * Maps the contained Ok<T> value to a new Ok<U> value. Leaves the `Err` value untouched.
 	 */
-	map<U>(fn: (val: T) => U): Result<U, E>;
+	abstract map<U>(fn: (val: T) => U): Result<U, E>;
 
 	/**
 	 * Maps the contained Err<E> value to a new Err<F> value. Leaves the `Ok` value untouched.
 	 */
-	map_err<F>(fn: (err: E) => F): Result<T, F>;
+	abstract map_err<F>(fn: (err: E) => F): Result<T, F>;
 
 	/**
 	 * Maps the Result<T, E> to Result<U, E> by applying a function to a contained Ok value, leaving an Err value untouched.
 	 */
-	and_then<U>(fn: (val: T) => Result<U, E>): Result<U, E>;
+	abstract and_then<U>(fn: (val: T) => Result<U, E>): Result<U, E>;
 
 	/**
 	 * Calls the given closure with the contained value if the value is an `Ok` variant.
 	 */
-	inspect(fn: (val: T) => void): Result<T, E>;
+	abstract inspect(fn: (val: T) => void): Result<T, E>;
 
 	/**
 	 * Calls the given closure with the contained error if the value is an `Err` variant.
 	 */
-	inspect_err: (fn: (err: E) => void) => Result<T, E>;
+	abstract inspect_err(fn: (err: E) => void): Result<T, E>;
 }
 
-class OkResult<T, E> implements ResultOkErr<T, E> {
+class OkResult<T, E> extends ResultBase<T, E> {
 	public readonly type = ResultType.Ok;
-	constructor(private value: T) {}
+	constructor(private value: T) {
+		super();
+	}
 
 	ok(): Option<T> {
 		return Some(this.value);
 	}
 
 	err(): Option<E> {
-		return None();
+		return None;
 	}
 
 	expect(msg: string): T {
@@ -125,16 +127,8 @@ class OkResult<T, E> implements ResultOkErr<T, E> {
 		return this.value;
 	}
 
-	is_ok(): this is OkResult<T, E> {
-		return true;
-	}
-
-	is_err(): this is ErrResult<T, E> {
-		return false;
-	}
-
 	or_else(fn: (err: E) => Result<T, E>): Result<T, E> {
-		return this as unknown as Result<T, E>;
+		return this;
 	}
 
 	map<U>(fn: (val: T) => U): Result<U, E> {
@@ -151,21 +145,23 @@ class OkResult<T, E> implements ResultOkErr<T, E> {
 
 	inspect(fn: (val: T) => void): Result<T, E> {
 		fn(this.value);
-		return this as unknown as Result<T, E>;
+		return this;
 	}
 
 	inspect_err(fn: (err: E) => void): Result<T, E> {
-		return this as unknown as Result<T, E>;
+		return this;
 	}
 }
 
-class ErrResult<T, E> implements ResultOkErr<T, E> {
+class ErrResult<T, E> extends ResultBase<T, E> {
 	public readonly type = ResultType.Err;
 
-	constructor(private error: E) {}
+	constructor(private error: E) {
+		super();
+	}
 
 	ok(): Option<T> {
-		return None();
+		return None;
 	}
 
 	err(): Option<E> {
@@ -188,14 +184,6 @@ class ErrResult<T, E> implements ResultOkErr<T, E> {
 		return fn(this.error);
 	}
 
-	is_ok(): this is OkResult<T, E> {
-		return false;
-	}
-
-	is_err(): this is ErrResult<T, E> {
-		return true;
-	}
-
 	or_else(fn: (err: E) => Result<T, E>): Result<T, E> {
 		return fn(this.error);
 	}
@@ -215,11 +203,11 @@ class ErrResult<T, E> implements ResultOkErr<T, E> {
 	}
 
 	inspect(fn: (val: T) => void): Result<T, E> {
-		return this as unknown as Result<T, E>;
+		return this;
 	}
 
 	inspect_err(fn: (err: E) => void): Result<T, E> {
 		fn(this.error);
-		return this as unknown as Result<T, E>;
+		return this;
 	}
 }
