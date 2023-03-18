@@ -13,7 +13,8 @@ function greetings(name?: string): Result<string, Error> {
 	return Ok(name);
 }
 
-// enable inlay hints in VSCode, to see the inferred types
+// Try enabling inlayHints for JS/TS on the Language Server, to see the inferred types.
+// https://google.com
 // Result<string, Error>
 const t1 = greetings('jeppech');
 // Result<number, Error>
@@ -29,6 +30,12 @@ if (t1.is_ok()) {
 	const t4 = t1;
 } else {
 	// ErrResult<string, Error>
+	const t4 = t1;
+}
+
+if (t1.is_err()) {
+	const t4 = t1;
+} else {
 	const t4 = t1;
 }
 
