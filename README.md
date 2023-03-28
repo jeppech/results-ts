@@ -69,6 +69,10 @@ const e1 = t1.expect("we do not expect the name to be 'jeppech'. This throws!");
 // string
 const e2 = o1.expect('this does not throw, because the option is not None.');
 //         ^- this is a Option<string>
+
+// Result<void, never>
+const void_result = Ok()
+
 ```
 
 # Acknowledgement
