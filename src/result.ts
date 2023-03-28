@@ -7,8 +7,10 @@ export enum ResultType {
 
 export type Result<T, E> = OkResult<T, E> | ErrResult<T, E>;
 
-export function Ok<T>(value: T): Result<T, never> {
-	return new OkResult(value);
+export function Ok<T>(value: T): Result<T, never>
+export function Ok<T = void>(): Result<void, never>
+export function Ok<T>(value?: T): Result<T, never> {
+	return new OkResult(value)
 }
 
 export function Err<E>(error: E): Result<never, E> {
@@ -99,8 +101,11 @@ abstract class ResultBase<T, E> {
 
 class OkResult<T, E> extends ResultBase<T, E> {
 	public readonly type = ResultType.Ok;
-	constructor(private value: T) {
+	private value: T
+	constructor(data?: T) {
 		super();
+
+		this.value = data || null as T
 	}
 
 	ok(): Option<T> {
