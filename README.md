@@ -1,4 +1,5 @@
 # Result and Option types, like in Rust! 🤯
+[![Npm package version](https://badgen.net/npm/v/@jeppech/results-ts)](https://npmjs.com/package/@jeppech/results-ts)
 
 Utility functions for creating and handling Rust-like Result and Options types.
 
