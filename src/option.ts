@@ -1,3 +1,5 @@
+import { Err, Ok, Result } from "./result";
+
 enum OptionType {
 	Some,
 	None,
@@ -47,6 +49,11 @@ abstract class BaseOption<T> {
 	abstract unwrap_or_else(fn: () => T): T;
 
 	/**
+	 * Transforms the Option<T> into a Result<T, E>. Mapping Some to Ok(v), and None to Err(err)
+	 */
+	abstract ok_or<E>(err: E): Result<T, E>
+
+	/**
 	 * Returns the contained Some<T> value or computes a new Option<T> from the given closure.
 	 */
 	abstract or_else(fn: () => Option<T>): Option<T>;
@@ -90,6 +97,10 @@ class SomeOption<T> extends BaseOption<T> {
 		return this.value;
 	}
 
+	ok_or<E>(err: E): Result<T, E> {
+		return Ok(this.value)
+	}
+
 	or_else(fn: () => Option<T>): Option<T> {
 		return this;
 	}
@@ -121,6 +132,10 @@ class NoneOption<T> extends BaseOption<T> {
 
 	unwrap_or_else(fn: () => T): T {
 		return fn();
+	}
+
+	ok_or<E>(err: E): Result<T, E> {
+		return Err(err)
 	}
 
 	or_else(fn: () => Option<T>): Option<T> {
