@@ -115,8 +115,8 @@ class SomeOption<T> extends BaseOption<T> {
 	}
 
 	map_or<U>(fn: (v: T) => U, opt: U): U {
-  	return fn(this.value)
-  }
+		return fn(this.value)
+	}
 
 	and_then<U>(fn: (val: T) => Option<U>): Option<U> {
 		return fn(this.value);
