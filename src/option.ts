@@ -59,9 +59,14 @@ abstract class BaseOption<T> {
 	abstract or_else(fn: () => Option<T>): Option<T>;
 
 	/**
-	 * Maps the contained value to a new value.
+	 * Maps the contained value to a new Option.
 	 */
 	abstract map<U>(fn: (v: T) => U): Option<U>;
+
+	/**
+	 * Maps the contained Some<T> to U, or returns opt
+	 */
+	abstract map_or<U>(fn: (v: T) => U, opt: U): U;
 
 	/**
 	 * Maps the contained Some value to a new Option<U> value.
@@ -109,6 +114,10 @@ class SomeOption<T> extends BaseOption<T> {
 		return Some(fn(this.value));
 	}
 
+	map_or<U>(fn: (v: T) => U, opt: U): U {
+  	return fn(this.value)
+  }
+
 	and_then<U>(fn: (val: T) => Option<U>): Option<U> {
 		return fn(this.value);
 	}
@@ -145,6 +154,10 @@ class NoneOption<T> extends BaseOption<T> {
 	map<U>(fn: (v: T) => U): Option<U> {
 		return None;
 	}
+
+	map_or<U>(fn: (v: T) => U, opt: U): U {
+    return opt
+  }
 
 	and_then<U>(fn: (val: T) => Option<U>): Option<U> {
 		return None;
