@@ -174,7 +174,7 @@ class ErrResult<T, E> extends ResultBase<T, E> {
 	}
 
 	expect(msg: string): T {
-		throw new Error(msg);
+		throw new Error(`${msg}: ${this.error}`);
 	}
 
 	unwrap_err(): E {
