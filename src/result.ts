@@ -7,8 +7,6 @@ export enum ResultType {
 
 export type Result<T, E> = OkResult<T, E> | ErrResult<T, E>;
 
-// export function Ok<T = void>(): Result<void, never>
-// export function Ok<T>(value: T): Result<T, never>
 export function Ok<T = void>(value?: T): Result<T, never> { 
 	return new OkResult(value)
 }
