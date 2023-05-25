@@ -64,4 +64,3 @@ const e2 = o1.expect('this does not throw, because the option is not None.');
 
 // Result<void, never>
 const void_result = Ok()
-
