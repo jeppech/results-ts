@@ -1,8 +1,8 @@
 import { Err, Ok, Result } from './result';
 
 enum OptionType {
-  Some,
   None,
+  Some,
 }
 
 export type Option<T> = SomeOption<T> | NoneOption<T>;
