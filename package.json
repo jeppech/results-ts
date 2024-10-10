@@ -17,10 +17,10 @@
     "lib/**/*"
   ],
   "scripts": {
-    "prepare": "npm run build",
-    "prepublishOnly": "npm run lint",
+    "prepare": "pnpm build",
+    "prepublishOnly": "pnpm lint",
     "format": "prettier --config .prettierrc --write 'src/**/*.ts'",
-    "lint": "eslint -c .eslintrc.json --ext .ts src/",
+    "lint": "eslint src/",
     "build": "rm -rf ./lib/**/* && tsc -p tsconfig.json",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -33,6 +33,8 @@
     "functional"
   ],
   "devDependencies": {
+    "@eslint/eslintrc": "^3.1.0",
+    "@eslint/js": "^9.12.0",
     "@typescript-eslint/eslint-plugin": "^8.8.1",
     "@typescript-eslint/parser": "^8.8.1",
     "eslint": "^9.12.0",
