@@ -18,11 +18,11 @@ export function Err<E>(error: E): Result<never, E> {
 abstract class ResultBase<T, E> {
   abstract readonly type: ResultType;
 
-  is_ok(): this is OkResult<T, never> {
+  is_ok(): this is OkResult<T, E> {
     return this.type === ResultType.Ok;
   }
 
-  is_err(): this is ErrResult<never, E> {
+  is_err(): this is ErrResult<T, E> {
     return this.type === ResultType.Err;
   }
 
