@@ -5,24 +5,24 @@ export enum ResultType {
   Err,
 }
 
-export type Result<T, E> = OkResult<T, E> | ErrResult<T, E>;
+export type Result<T = unknown, E = unknown> = _Ok<T, E> | _Err<T, E>;
 
 export function Ok<T = void>(value?: T): Result<T, never> {
-  return new OkResult(value);
+  return new _Ok(value);
 }
 
 export function Err<E>(error: E): Result<never, E> {
-  return new ErrResult(error);
+  return new _Err(error);
 }
 
 abstract class ResultBase<T, E> {
   abstract readonly type: ResultType;
 
-  is_ok(): this is OkResult<T, E> {
+  is_ok(): this is _Ok<T, E> {
     return this.type === ResultType.Ok;
   }
 
-  is_err(): this is ErrResult<T, E> {
+  is_err(): this is _Err<T, E> {
     return this.type === ResultType.Err;
   }
 
@@ -97,7 +97,7 @@ abstract class ResultBase<T, E> {
   abstract inspect_err(fn: (err: E) => void): Result<T, E>;
 }
 
-class OkResult<T, E> extends ResultBase<T, E> {
+class _Ok<T, E> extends ResultBase<T, E> {
   public readonly type = ResultType.Ok;
   private value: T;
   constructor(data?: T) {
@@ -122,23 +122,27 @@ class OkResult<T, E> extends ResultBase<T, E> {
     return this.value;
   }
 
-  unwrap_or(opt: T): T {
+  // method only applies to Err values
+  unwrap_or(): T {
     return this.value;
   }
 
-  unwrap_or_else(fn: (err: E) => T): T {
+  // method only applies to Err values
+  unwrap_or_else(): T {
     return this.value;
   }
 
-  or_else(fn: (err: E) => Result<T, E>): Result<T, E> {
-    return this;
+  // method only applies to Err values
+  or_else(): Result<T, E> {
+    return this as unknown as Result<T, E>;
   }
 
   map<U>(fn: (val: T) => U): Result<U, E> {
     return Ok(fn(this.value));
   }
 
-  map_err<F>(fn: (err: E) => F): Result<T, F> {
+  // method only applies to Err values
+  map_err<F>(): Result<T, F> {
     return this as unknown as Result<T, F>;
   }
 
@@ -148,15 +152,16 @@ class OkResult<T, E> extends ResultBase<T, E> {
 
   inspect(fn: (val: T) => void): Result<T, E> {
     fn(this.value);
-    return this;
+    return this as unknown as Result<T, E>;
   }
 
-  inspect_err(fn: (err: E) => void): Result<T, E> {
-    return this;
+  // method only applies to Err values
+  inspect_err(): Result<T, E> {
+    return this as unknown as Result<T, E>;
   }
 }
 
-class ErrResult<T, E> extends ResultBase<T, E> {
+class _Err<T, E> extends ResultBase<T, E> {
   public readonly type = ResultType.Err;
 
   constructor(private error: E) {
@@ -191,9 +196,8 @@ class ErrResult<T, E> extends ResultBase<T, E> {
     return fn(this.error);
   }
 
-  map<U>(fn: (val: T) => U): Result<U, E> {
-    // We could return a new instance of _Err, to satisfy the return type.
-    // But instead we just return the same instance, since it's already an error.
+  // method only applies to Ok values
+  map<U>(): Result<U, E> {
     return this as unknown as Result<U, E>;
   }
 
@@ -201,16 +205,18 @@ class ErrResult<T, E> extends ResultBase<T, E> {
     return Err(fn(this.error));
   }
 
-  and_then<U>(fn: (val: T) => Result<U, E>): Result<U, E> {
+  // method only applies to Ok values
+  and_then<U>(): Result<U, E> {
     return this as unknown as Result<U, E>;
   }
 
-  inspect(fn: (val: T) => void): Result<T, E> {
-    return this;
+  // method only applies to Ok values
+  inspect(): Result<T, E> {
+    return this as unknown as Result<T, E>;
   }
 
   inspect_err(fn: (err: E) => void): Result<T, E> {
     fn(this.error);
-    return this;
+    return this as unknown as Result<T, E>;
   }
 }

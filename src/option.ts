@@ -5,7 +5,7 @@ enum OptionType {
   Some,
 }
 
-export type Option<T> = SomeOption<T> | NoneOption<T>;
+export type Option<T> = _Some<T> | _None<T>;
 
 abstract class BaseOption<T> {
   // This is needed to make the type guard work
@@ -14,15 +14,15 @@ abstract class BaseOption<T> {
   /**
    * Asserts that the value is a `Some` variant.
    */
-  is_some(): this is SomeOption<T> {
-    return this instanceof SomeOption;
+  is_some(): this is _Some<T> {
+    return this instanceof _Some;
   }
 
   /**
    * Asserts that the value is a `None` variant.
    */
-  is_none(): this is NoneOption<T> {
-    return this instanceof NoneOption;
+  is_none(): this is _None<T> {
+    return this instanceof _None;
   }
 
   /**
@@ -79,7 +79,7 @@ abstract class BaseOption<T> {
   abstract inspect(fn: (val: T) => void): Option<T>;
 }
 
-class SomeOption<T> extends BaseOption<T> {
+class _Some<T> extends BaseOption<T> {
   readonly type = OptionType.Some;
 
   constructor(private value: T) {
@@ -128,7 +128,7 @@ class SomeOption<T> extends BaseOption<T> {
   }
 }
 
-class NoneOption<T> extends BaseOption<T> {
+class _None<T> extends BaseOption<T> {
   readonly type = OptionType.None;
 
   expect(msg: string): T {
@@ -169,8 +169,8 @@ class NoneOption<T> extends BaseOption<T> {
 }
 
 export function Some<T>(value?: T): Option<T> {
-  return value === undefined ? None : new SomeOption(value);
+  return value === undefined ? None : new _Some(value);
 }
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
-export const None = new NoneOption<any>();
+export const None = new _None<any>();
