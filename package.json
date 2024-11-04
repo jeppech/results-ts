@@ -11,17 +11,26 @@
   "bugs": {
     "url": "https://github.com/jeppech/results-ts/issues"
   },
-  "main": "./lib/index.js",
-  "types": "./lib/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./lib/index.js",
+      "types": "./lib/index.d.ts"
+    },
+    "./utils": {
+      "import": "./lib/utils.js",
+      "types": "./lib/utils.d.ts"
+    }
+  },
   "files": [
     "lib/**/*"
   ],
   "scripts": {
-    "prepare": "pnpm build",
+    "prepare": "pnpm build && pnpm clean && pnpm format && pnpm lint && pnpm build",
     "prepublishOnly": "pnpm lint",
     "format": "prettier --config .prettierrc --write 'src/**/*.ts'",
     "lint": "eslint src/",
-    "build": "rm -rf ./lib/**/* && tsc -p tsconfig.json",
+    "clean": "rm -rf ./lib/**/*",
+    "build": "tsc -p tsconfig.json",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
@@ -34,10 +43,11 @@
   ],
   "devDependencies": {
     "@eslint/eslintrc": "^3.1.0",
-    "@eslint/js": "^9.12.0",
-    "@typescript-eslint/eslint-plugin": "^8.8.1",
-    "@typescript-eslint/parser": "^8.8.1",
-    "eslint": "^9.12.0",
+    "@eslint/js": "^9.14.0",
+    "@types/node": "^22.8.7",
+    "@typescript-eslint/eslint-plugin": "^8.12.2",
+    "@typescript-eslint/parser": "^8.12.2",
+    "eslint": "^9.14.0",
     "prettier": "^3.3.3",
     "typescript": "^5.6.3"
   }
