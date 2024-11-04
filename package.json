@@ -11,6 +11,7 @@
   "bugs": {
     "url": "https://github.com/jeppech/results-ts/issues"
   },
+  "type": "module",
   "exports": {
     ".": {
       "import": "./lib/index.js",

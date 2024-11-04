@@ -1,4 +1,4 @@
-import { Some, None, type Option } from './option';
+import { Some, None, type Option } from './option.js';
 
 export enum ResultType {
   Ok,
