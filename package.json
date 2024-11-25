@@ -1,6 +1,6 @@
 {
   "name": "@jeppech/results-ts",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "description": "Rust-like Result and Option types for TypeScript",
   "author": "Jeppe Christiansen",
   "license": "ISC",
@@ -15,10 +15,12 @@
   "exports": {
     ".": {
       "import": "./lib/index.js",
+      "require": "./lib/index.js",
       "types": "./lib/index.d.ts"
     },
     "./utils": {
       "import": "./lib/utils.js",
+      "require": "./lib/utils.js",
       "types": "./lib/utils.d.ts"
     }
   },
@@ -26,12 +28,12 @@
     "lib/**/*"
   ],
   "scripts": {
-    "prepare": "pnpm build && pnpm clean && pnpm format && pnpm lint && pnpm build",
+    "prepare": "pnpm format && pnpm lint && pnpm build",
     "prepublishOnly": "pnpm lint",
     "format": "prettier --config .prettierrc --write 'src/**/*.ts'",
     "lint": "eslint src/",
     "clean": "rm -rf ./lib/**/*",
-    "build": "tsc -p tsconfig.json",
+    "build": "pnpm clean && tsc -p tsconfig.json",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [

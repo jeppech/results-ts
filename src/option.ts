@@ -126,6 +126,10 @@ class _Some<T> extends BaseOption<T> {
     fn(this.value);
     return this;
   }
+
+  toJSON() {
+    return this.value;
+  }
 }
 
 class _None<T> extends BaseOption<T> {
@@ -165,6 +169,10 @@ class _None<T> extends BaseOption<T> {
 
   inspect(fn: (val: T) => void): Option<T> {
     return this;
+  }
+
+  toJSON() {
+    return undefined;
   }
 }
 
