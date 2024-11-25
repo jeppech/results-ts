@@ -1,4 +1,4 @@
-import { Ok, Err, type Result } from '../src';
+import { Ok, Err, type Result } from '@jeppech/results-ts';
 
 // The generic `Result`-type must be set on the function signature
 function greetings(name?: string): Result<string, Error> {
