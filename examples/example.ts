@@ -54,6 +54,22 @@ if (o1.is_none()) {
   const o2 = o1;
 }
 
+// compare an option with a value
+if (o1.eq('sup')) {
+  // we can now safely unwrap o1
+  const o2 = o1.unwrap();
+}
+
+// compare two options
+if (o1.eq_some(t4)) {
+  // we can now safely unwrap o1
+  const o2 = o1.unwrap();
+}
+
+if (o1.eq_none(t4)) {
+  // both options are None
+}
+
 // string
 const e1 = t1.expect("we do not expect the name to be 'jeppech'. This throws!");
 //         ^- this is a Result<string, Error>");

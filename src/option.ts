@@ -26,6 +26,13 @@ abstract class BaseOption<T> {
   }
 
   /**
+   * Returns `true` if the option is a `Some` variant, and the inner value is equal to the given value.
+   */
+  eq(val: T): this is _Some<T> {
+    return this.is_some() && this.unwrap() === val;
+  }
+
+  /**
    * Returns `true` if both variants are `Some` and the inner values are equal.
    */
   eq_some(val: Option<unknown>): this is _Some<T> {
@@ -35,7 +42,7 @@ abstract class BaseOption<T> {
   /**
    * Returns `true` if both variants are `None`.
    */
-  eq_none(val: Option<unknown>): boolean {
+  eq_none(val: Option<unknown>): this is _None<T> {
     return this.is_none() && val.is_none();
   }
   /**
