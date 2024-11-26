@@ -26,6 +26,19 @@ abstract class BaseOption<T> {
   }
 
   /**
+   * Returns `true` if both variants are `Some` and the inner values are equal.
+   */
+  eq_some(val: Option<unknown>): this is _Some<T> {
+    return this.is_some() && val.is_some() && this.unwrap() === val.unwrap();
+  }
+
+  /**
+   * Returns `true` if both variants are `None`.
+   */
+  eq_none(val: Option<unknown>): boolean {
+    return this.is_none() && val.is_none();
+  }
+  /**
    * Returns the contained Some value.
    * If called on a potential `None` variant, Typescript will throw an error.
    */
