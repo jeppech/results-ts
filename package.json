@@ -1,6 +1,6 @@
 {
   "name": "@jeppech/results-ts",
-  "version": "1.2.4",
+  "version": "1.2.5",
   "description": "Rust-like Result and Option types for TypeScript",
   "author": "Jeppe Christiansen",
   "license": "ISC",

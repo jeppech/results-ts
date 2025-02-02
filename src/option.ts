@@ -150,6 +150,14 @@ class _Some<T> extends BaseOption<T> {
   toJSON() {
     return this.value;
   }
+
+  toString() {
+    if (typeof this.value === 'string') {
+      return this.value;
+    }
+
+    return this.value?.toString() || '';
+  }
 }
 
 class _None<T> extends BaseOption<T> {
@@ -193,6 +201,10 @@ class _None<T> extends BaseOption<T> {
 
   toJSON() {
     return undefined;
+  }
+
+  toString() {
+    return '';
   }
 }
 
