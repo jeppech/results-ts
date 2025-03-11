@@ -103,7 +103,11 @@ class _Ok<T, E> extends ResultBase<T, E> {
   constructor(data?: T) {
     super();
 
-    this.value = data || (null as T);
+    if (typeof data == 'undefined') {
+      this.value = null as T;
+    } else {
+      this.value = data;
+    }
   }
 
   ok(): Option<T> {
