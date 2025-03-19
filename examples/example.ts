@@ -1,7 +1,19 @@
-import { Ok, Err, type Result } from '@jeppech/results-ts';
+import { Ok, Err, type Result, Some } from '../src';
+
+function inner_error(): Result<number, Error> {
+  return Err(new Error('Inner error occurred'));
+}
 
 // The generic `Result`-type must be set on the function signature
 function greetings(name?: string): Result<string, Error> {
+  const err = inner_error();
+
+  if (err.is_err()) {
+    return Err(err.unwrap_err());
+  }
+
+  const num = err.unwrap();
+
   if (name === 'jeppech') {
     return Err(new Error('I will not greet jeppech!'));
   }
@@ -12,6 +24,12 @@ function greetings(name?: string): Result<string, Error> {
 
   return Ok(name);
 }
+
+function bool_test(): Result<boolean, Error> {
+  return Ok(true);
+}
+
+const d = bool_test().unwrap_or(false);
 
 // Try enabling inlayHints for JS/TS on the Language Server, to see the inferred types.
 // https://google.com
