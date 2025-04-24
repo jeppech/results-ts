@@ -1,15 +1,5 @@
 import { Err, Ok, type Option, type Result } from './index.js';
 
-export type Jsonable =
-  | string
-  | number
-  | boolean
-  | null
-  | undefined
-  | readonly Jsonable[]
-  | { readonly [key: string]: Jsonable }
-  | { toJSON(): Jsonable };
-
 export type AsyncResult<T, E = Error> = Promise<Result<T, E>>;
 export type AsyncOption<T> = Promise<Option<T>>;
 
@@ -47,7 +37,7 @@ export function base64_decode(val: string): Result<string, string> {
   }
 }
 
-export function json_stringify(data: Jsonable, pretty = false): Result<string, string> {
+export function json_stringify(data: unknown, pretty = false): Result<string, string> {
   try {
     if (!pretty) {
       return Ok(JSON.stringify(data));
