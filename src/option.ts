@@ -97,6 +97,11 @@ abstract class BaseOption<T> {
    * Calls the given closure with the contained value if the value is a `Some` variant.
    */
   abstract inspect(fn: (val: T) => void): Option<T>;
+
+  /**
+   * Returns the contained Some value, or `undefined` if None
+   */
+  abstract or_undefined(): T | undefined;
 }
 
 class _Some<T> extends BaseOption<T> {
@@ -145,6 +150,10 @@ class _Some<T> extends BaseOption<T> {
   inspect(fn: (val: T) => void): Option<T> {
     fn(this.value);
     return this;
+  }
+
+  or_undefined() {
+    return this.value;
   }
 
   toJSON() {
@@ -197,6 +206,10 @@ class _None<T> extends BaseOption<T> {
 
   inspect(fn: (val: T) => void): Option<T> {
     return this;
+  }
+
+  or_undefined() {
+    return undefined;
   }
 
   toJSON() {

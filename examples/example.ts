@@ -1,4 +1,4 @@
-import { Ok, Err, type Result, Some } from '../src';
+import { Ok, Err, type Result, Some, None } from '../src';
 
 function inner_error(): Result<number, Error> {
   return Err(new Error('Inner error occurred'));
