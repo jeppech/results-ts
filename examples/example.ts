@@ -64,9 +64,13 @@ const o1 = t4;
 if (o1.is_none()) {
   // NoneOption<string>
   const o2 = o1;
+  console.log(o2.toString());
+  console.log(o2.toJSON());
 } else if (o1.is_some()) {
   // SomeOption<string>
   const o2 = o1;
+  console.log(o2.toString());
+  console.log(o2.toJSON());
 } else {
   // never
   const o2 = o1;
