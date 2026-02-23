@@ -118,7 +118,7 @@ abstract class BaseOption<T> {
   abstract toJSON(): T | undefined;
 }
 
-class _Some<T> extends BaseOption<T> {
+export class _Some<T> extends BaseOption<T> {
   readonly type = OptionType.Some;
 
   constructor(private value: T) {
@@ -175,7 +175,7 @@ class _Some<T> extends BaseOption<T> {
   }
 }
 
-class _None<T> extends BaseOption<T> {
+export class _None<T> extends BaseOption<T> {
   readonly type = OptionType.None;
 
   expect(msg: string): T {

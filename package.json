@@ -1,6 +1,6 @@
 {
   "name": "@jeppech/results-ts",
-  "version": "1.3.3",
+  "version": "1.3.4",
   "description": "Rust-like Result and Option types for TypeScript",
   "author": "Jeppe Christiansen",
   "license": "ISC",
@@ -22,6 +22,11 @@
       "import": "./lib/utils.js",
       "require": "./lib/utils.js",
       "types": "./lib/utils.d.ts"
+    },
+    "./internal": {
+      "import": "./lib/internal.js",
+      "require": "./lib/internal.js",
+      "types": "./lib/internal.d.ts"
     }
   },
   "files": [
