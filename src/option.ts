@@ -45,6 +45,18 @@ abstract class BaseOption<T> {
   eq_none(val: Option<unknown>): this is _None<T> {
     return this.is_none() && val.is_none();
   }
+
+  toString(): string {
+    if (this.is_some()) {
+      const value = this.unwrap();
+      if (typeof value === 'string') {
+        return value;
+      }
+
+      return value?.toString() || '';
+    }
+    return '';
+  }
   /**
    * Returns the contained Some value.
    * If called on a potential `None` variant, Typescript will throw an error.
@@ -102,6 +114,8 @@ abstract class BaseOption<T> {
    * Returns the contained Some value, or `undefined` if None
    */
   abstract or_undefined(): T | undefined;
+
+  abstract toJSON(): T | undefined;
 }
 
 class _Some<T> extends BaseOption<T> {
@@ -159,14 +173,6 @@ class _Some<T> extends BaseOption<T> {
   toJSON() {
     return this.value;
   }
-
-  toString() {
-    if (typeof this.value === 'string') {
-      return this.value;
-    }
-
-    return this.value?.toString() || '';
-  }
 }
 
 class _None<T> extends BaseOption<T> {
@@ -214,10 +220,6 @@ class _None<T> extends BaseOption<T> {
 
   toJSON() {
     return undefined;
-  }
-
-  toString() {
-    return '';
   }
 }
 
